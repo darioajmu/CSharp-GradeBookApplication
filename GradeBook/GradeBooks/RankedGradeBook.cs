@@ -7,13 +7,22 @@ namespace GradeBook.GradeBooks
 {
   public class RankedGradeBook : BaseGradeBook
   {
+    private int studentsTotal {
+      set
+      {
+        studentsTotal = Students.Count;
+      }
+      get
+      {
+        return studentsTotal;
+      }
+    }
     public RankedGradeBook(string name) : base(name)
     {
       Type = GradeBookType.Ranked;
     }
     public override char GetLetterGrade(double averageGrade)
     {
-      var studentsTotal = Students.Count;
       if (studentsTotal < 5)
       {
         throw new InvalidOperationException("Ranked-grading requires a minimum of 5 students to work");
@@ -32,6 +41,30 @@ namespace GradeBook.GradeBooks
       if (percentage > .4) { return 'C'; }
       if (percentage > .2) { return 'D'; }
       return 'F';
+    }
+
+    public override void CalculateStatistics()
+    {
+      if (studentsTotal < 5)
+      {
+        throw new InvalidOperationException("Ranked-grading requires a minimum of 5 students to work");
+      }
+      else
+      {
+        base.CalculateStatistics();
+      }
+    }
+
+    public override void CalculateStudentStatistics(string name)
+    {
+      if (studentsTotal < 5)
+      {
+        throw new InvalidOperationException("Ranked-grading requires a minimum of 5 students to work");
+      }
+      else
+      {
+        base.CalculateStudentStatistics(name);
+      }
     }
   }
 }
